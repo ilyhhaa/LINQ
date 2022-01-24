@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+
+
+namespace Linq
+{
+    class Shops
+    {
+        public string Name { get; set; }
+        public int NumberRacks { get; set; }
+        public List<string> Products { get; set;}
+        public Shops()
+        {
+            Products = new List<string>();
+        }
+
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> mushrooms = new List<string>() { "Мухомор", "Бледная поганка", "Боровик", "Масленок", "Подосиновик", "Опята" };
+            var mush = from m in mushrooms
+                       where m.ToUpper().StartsWith("Б")
+                       orderby m
+                       select m;
+            foreach (string take in mush)
+            {
+                Console.WriteLine(take);
+            }
+            Console.WriteLine();
+            //////////////////////////
+            //////////where//////////
+            ////////////////////////
+
+            int[] Nums = { 5, 8, 13, 7, 26, 35, 10789, 197, 98, 33, 55, 1924 };
+            IEnumerable<int> evens = Nums.Where(i => i % 13 == 0 && i > 1);
+            foreach (var item in evens)
+            {
+                Console.WriteLine(item);
+            }
+
+            List<Shops> shops = new List<Shops>
+            {
+                new Shops {Name = "BestBuy" , NumberRacks = 6 , Products = new List<string>{"Колбаса","Молоко","Шоколад", "Яйца", "Сметана","Яблоки" } },
+                new Shops {Name = "Costco" , NumberRacks = 3 , Products = new List<string>{"Колбаса","Молоко","Шоколад"} },
+                new Shops {Name = "Target" , NumberRacks = 2 , Products = new List<string>{"Колбаса","Молоко"} },
+                new Shops {Name = "Wallmart" , NumberRacks = 5 , Products = new List<string>{"Колбаса","Молоко","Шоколад","Яйца","Сметана"} }
+            };
+            
+            var ShopSelecter = from Selection in shops
+                               where Selection.NumberRacks >= 3
+                               select Selection;
+            Console.WriteLine("Магазины с заданным асортиментом");
+            foreach (Shops shops1 in ShopSelecter)
+            {
+                
+                Console.WriteLine($"{shops1.Name} - {shops1.NumberRacks}");
+            }
+            shops.Add(new Shops { Name = "Belmarket", NumberRacks = 12, Products = new List<string> { "Колбаса", "Молоко", "Шоколад", "Яйца", "Сметана", "Яблоки","Колбаса", "Молоко", "Шоколад", "Яйца", "Сметана", "Яблоки" } });
+            shops.Add(new Shops { Name = "Hippo", NumberRacks = 1, Products = new List<string> { "HippoMeat" } });
+
+            Console.WriteLine();
+
+            var namesOnly = from Namesonly in shops select Namesonly.Name;
+                           
+                            
+            foreach (var names in namesOnly)
+            {
+                Console.WriteLine(names);
+            }
+
+            Console.WriteLine();
+
+            var sortedbyRacks = from Sort in shops
+                                orderby Sort.NumberRacks
+                                select Sort;
+            foreach (Shops Racks in sortedbyRacks)
+            {
+                Console.WriteLine(Racks.NumberRacks);
+            }
+            //////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////
+            Console.WriteLine();
+
+            int[] nums = { 1, 2, 55, 77, 88, 12,99 };
+            int[] nums1 = { 1, 5, 22, 65, 12, 89, 53,99 };
+            var resultIntersect = nums.Intersect(nums1);
+            foreach (var item in resultIntersect)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine();
+
+            var resultUnion = nums.Union(nums1).Distinct();
+            foreach (var item1 in resultUnion)
+            {
+                Console.WriteLine(item1);
+            }
+
+            Console.WriteLine();
+
+            int minInRacks = sortedbyRacks.Min(Racks1 => Racks1.NumberRacks);
+            double maxInRacks = sortedbyRacks.Average(Racks2 => Racks2.NumberRacks);
+            int avgInRacks = sortedbyRacks.Max(Racks3 => Racks3.NumberRacks);
+
+            Console.WriteLine(minInRacks);
+            Console.WriteLine(maxInRacks);
+            Console.WriteLine(avgInRacks);
+
+            Console.WriteLine();
+
+            var SkipTake = nums.Skip(3).Take(2);
+            foreach (var ST in SkipTake)
+            {
+                Console.WriteLine(ST);
+            }
+           
+        }
+
+    }
+}
